@@ -4,7 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import java.util.*
+import app.mblackman.topmovies.data.common.RatingSource
+import java.time.LocalDate
 
 /**
  * The basic information held about a movie.
@@ -15,15 +16,11 @@ data class Movie(
     val id: Long = 0,
     val title: String? = null,
     val year: Int? = null,
-    val rating: String? = null,
-    val releaseDate: Date? = null,
+    val releaseDate: LocalDate? = null,
     val runtime: Int? = null,
     val director: String? = null,
     val plotSummary: String? = null,
-    val awards: String? = null,
     val posterImgUrl: String? = null,
-    val imdbRating: String? = null,
-    val imdbVotes: Long? = null,
     val type: String? = null,
     val productionCompany: String? = null,
     val isFavorite: Boolean = false
@@ -79,7 +76,7 @@ data class Country(
  */
 @Entity(primaryKeys = ["source", "movieId"])
 data class Rating(
-    val source: String,
+    val source: RatingSource,
     val value: String,
     val movieId: Long
 )

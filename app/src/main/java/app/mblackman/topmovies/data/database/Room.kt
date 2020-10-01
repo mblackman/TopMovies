@@ -2,6 +2,7 @@ package app.mblackman.topmovies.data.database
 
 import androidx.room.*
 import androidx.room.TypeConverters
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Defines base members for [Dao]s.
@@ -29,9 +30,32 @@ interface BaseDao<T> {
  */
 @Dao
 interface MovieDao : BaseDao<Movie> {
+    /**
+     * Gets all the [Movie]s with additional details.
+     *
+     * @return The list of [MovieWithDetails].
+     */
     @Transaction
     @Query("SELECT * FROM Movie")
     fun getMovies(): List<MovieWithDetails>
+
+    /**
+     * Gets all the movies with all given [Genre]s.
+     *
+     * @return The list of [MovieWithDetails].
+     */
+    @Transaction
+    @Query("SELECT * FROM Movie WHERE id in (SELECT movieId FROM Genre WHERE genre.name IN(:genres) GROUP BY movieId HAVING COUNT(1) = :genreCount)")
+    fun getMoviesByGenre(genres: List<String>, genreCount: Int): List<MovieWithDetails>
+
+    /**
+     * Gets all the movies release in the given year.
+     *
+     * @return The list of [MovieWithDetails].
+     */
+    @Transaction
+    @Query("SELECT * FROM Movie WHERE year = :year")
+    fun getMoviesByYear(year: Int): List<MovieWithDetails>
 }
 
 /**

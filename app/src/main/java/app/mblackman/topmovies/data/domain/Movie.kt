@@ -1,6 +1,6 @@
 package app.mblackman.topmovies.data.domain
 
-import java.util.*
+import java.time.LocalDate
 
 /**
  * Represents a movie and its associated data.
@@ -12,16 +12,14 @@ data class Movie(
     val genres: List<String> = emptyList(),
     val languages: List<String> = emptyList(),
     val countries: List<String> = emptyList(),
-    val rating: String? = null,
-    val releaseDate: Date? = null,
+    val ratings: List<Rating> = emptyList(),
+    val releaseDate: LocalDate? = null,
     val runtime: Int? = null,
     val director: String? = null,
     val actors: List<String> = emptyList(),
     val writers: List<String> = emptyList(),
     val plotSummary: String? = null,
     val posterImgUrl: String? = null,
-    val imdbRating: String? = null,
-    val imdbVotes: Long? = null,
     val productionCompany: String? = null,
     val isFavorite: Boolean = false
 )
