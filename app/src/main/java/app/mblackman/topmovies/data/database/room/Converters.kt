@@ -1,10 +1,8 @@
-package app.mblackman.topmovies.data.database
+package app.mblackman.topmovies.data.database.room
 
 import androidx.room.TypeConverter
 import app.mblackman.topmovies.data.common.RatingSource
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 
 /**
  * Converts used by Room to convert between types.

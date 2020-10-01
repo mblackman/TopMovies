@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.database
+package app.mblackman.topmovies.data.database.room
 
 import androidx.room.*
 import androidx.room.TypeConverters

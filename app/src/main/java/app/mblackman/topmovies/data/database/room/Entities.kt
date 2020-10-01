@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.database
+package app.mblackman.topmovies.data.database.room
 
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -21,7 +21,6 @@ data class Movie(
     val director: String? = null,
     val plotSummary: String? = null,
     val posterImgUrl: String? = null,
-    val type: String? = null,
     val productionCompany: String? = null,
     val isFavorite: Boolean = false
 )

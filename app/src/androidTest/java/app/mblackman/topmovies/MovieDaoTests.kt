@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.mblackman.topmovies.data.common.RatingSource
-import app.mblackman.topmovies.data.database.*
+import app.mblackman.topmovies.data.database.room.*
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -163,7 +163,6 @@ class MovieDaoTests {
             director = "Sam Mendes",
             plotSummary = "April 6th, 1917. As a regiment assembles to wage war deep in enemy territory, two soldiers are assigned to race against time and deliver a message that will stop 1,600 men from walking straight into a deadly trap.",
             posterImgUrl = "https://m.media-amazon.com/images/M/MV5BOTdmNTFjNDEtNzg0My00ZjkxLTg1ZDAtZTdkMDc2ZmFiNWQ1XkEyXkFqcGdeQXVyNTAzNzgwNTg@._V1_SX300.jpg",
-            type = "movie",
             productionCompany = "Universal Pictures",
             isFavorite = false
         )
@@ -218,26 +217,6 @@ class MovieDaoTests {
         }
     }
 
-    private fun app.mblackman.topmovies.data.domain.Movie.toDatabaseObject(): Movie =
-        Movie(
-            this.id,
-            this.title,
-            this.year,
-            this.releaseDate,
-            this.runtime,
-            this.director,
-            this.plotSummary,
-            this.posterImgUrl,
-            "movie",
-            this.productionCompany,
-            this.isFavorite
-        )
 
-    private fun app.mblackman.topmovies.data.domain.Rating.toDatabaseObject(movieId: Long): Rating =
-        Rating(
-            this.source,
-            this.value,
-            movieId
-        )
 }
 
