@@ -192,8 +192,8 @@ class MovieDaoTests {
     }
 
     private fun loadMovies(filename: String = topMoviesFilename) {
-        this.javaClass.classLoader?.getResourceAsStream(filename)?.bufferedReader()?.use { reader ->
-            with(loadMovieJson(reader)) {
+        this.javaClass.classLoader?.getResource(filename)?.readText()?.let { json ->
+            with(loadMovieJson(json)) {
                 movieDatabase.movieDao.insertAll(this.map { it.toDatabaseObject() })
 
                 forEach { movie ->
