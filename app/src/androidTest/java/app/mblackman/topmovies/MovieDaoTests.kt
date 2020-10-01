@@ -76,6 +76,38 @@ class MovieDaoTests {
 
     @FlowPreview
     @Test
+    fun filterByFavorite() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMovies().testAction(this) {
+            val firstFav = it.first().movie.copy(isFavorite = true)
+            movieDatabase.movieDao.updateMovie(firstFav)
+        }
+        movieDatabase.movieDao.getMoviesByFavorite(true).testAction(this) {
+            assertThat(it.count()).isEqualTo(1)
+            assertThat(it.first().movie.title).isEqualTo("1917")
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByFavoriteNoMatches() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByFavorite(true).testAction(this) {
+            assertThat(it.count()).isEqualTo(0)
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByNonFavorites() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByFavorite(false).testAction(this) {
+            assertThat(it.count()).isEqualTo(4)
+        }
+    }
+
+    @FlowPreview
+    @Test
     fun filterByGenresPartialMatch() = runBlocking {
         loadMovies()
         movieDatabase.movieDao.getMoviesByGenre(listOf("Drama", "War", "Made Up Genre"), 3).testAction(this) {

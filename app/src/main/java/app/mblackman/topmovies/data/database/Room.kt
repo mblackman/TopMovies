@@ -31,6 +31,12 @@ interface BaseDao<T> {
 @Dao
 interface MovieDao : BaseDao<Movie> {
     /**
+     * Updates the given [Movie].
+     */
+    @Update
+    fun updateMovie(movie: Movie)
+
+    /**
      * Gets all the [Movie]s with additional details.
      *
      * @return The list of [MovieWithDetails].
@@ -56,6 +62,15 @@ interface MovieDao : BaseDao<Movie> {
     @Transaction
     @Query("SELECT * FROM Movie WHERE year = :year")
     fun getMoviesByYear(year: Int): Flow<List<MovieWithDetails>>
+
+    /**
+     * Gets all the movies with the given favorite status.
+     *
+     * @return The list of [MovieWithDetails].
+     */
+    @Transaction
+    @Query("SELECT * FROM Movie WHERE isFavorite = :isFavorite")
+    fun getMoviesByFavorite(isFavorite: Boolean): Flow<List<MovieWithDetails>>
 }
 
 /**
