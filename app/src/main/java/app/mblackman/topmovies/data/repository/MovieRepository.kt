@@ -1,33 +1,24 @@
 package app.mblackman.topmovies.data.repository
 
-import app.mblackman.topmovies.data.database.MovieStore
+import app.mblackman.topmovies.data.common.MovieFilter
 import app.mblackman.topmovies.data.domain.Movie
-import app.mblackman.topmovies.data.network.MovieAdapter
-import app.mblackman.topmovies.data.network.Success
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Manages [Movie] data and its persistence.
- */
-class MovieRepository(private val store: MovieStore, private val adapter: MovieAdapter) {
+interface MovieRepository {
     /**
      * Gets movies from the adapter and updates the storage.
      *
      * @return True if the update was a success, else false.
      */
-    suspend fun getUpdatedMovies(): Boolean {
-        return when (val movies = adapter.getTopMovies()) {
-            is Success -> {
-                store.insertMovies(movies.result)
-                true
-            }
-            else -> false
-        }
-    }
+    suspend fun getUpdatedMovies(): Boolean
 
     /**
      * Updates the movie in the store.
      */
-    fun updateMovie(movie: Movie) {
-        store.updateMovie(movie)
-    }
+    fun updateMovie(movie: Movie)
+
+    /**
+     * Gets a [Flow] with the list of [Movie]s for the given filter.
+     */
+    fun getMovies(filter: MovieFilter? = null): Flow<List<Movie>>
 }

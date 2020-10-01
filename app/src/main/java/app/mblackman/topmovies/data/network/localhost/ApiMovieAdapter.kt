@@ -2,13 +2,14 @@ package app.mblackman.topmovies.data.network.localhost
 
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.network.*
+import javax.inject.Inject
 
 /**
  * A [MovieAdapter] that consumes [ApiService] for movie data.
  *
  * @param apiService The service to get the movie data from.
  */
-class ApiMovieAdapter(private val apiService: ApiService) : MovieAdapter {
+class ApiMovieAdapter @Inject constructor(private val apiService: ApiService) : MovieAdapter {
     /**
      * Gets the list of top [Movie]s.
      */

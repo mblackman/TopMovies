@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RoomMovieStore(private val database: MovieDatabase) : MovieStore {
+class RoomMovieStore @Inject constructor(private val database: MovieDatabase) : MovieStore {
     /**
      * Inserts all the movies in the store. This will not replace [Movie]s with existing ids.
      */
