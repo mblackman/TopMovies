@@ -16,7 +16,7 @@ interface BaseDao<T> {
      * @return The row id of the inserted item.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(item: T) : Long
+    fun insert(item: T): Long
 
     /**
      * Inserts all the [T] into the dao.
@@ -37,7 +37,7 @@ interface MovieDao : BaseDao<Movie> {
      */
     @Transaction
     @Query("SELECT * FROM Movie")
-    fun getMovies(): List<MovieWithDetails>
+    fun getMovies(): Flow<List<MovieWithDetails>>
 
     /**
      * Gets all the movies with all given [Genre]s.
@@ -46,7 +46,7 @@ interface MovieDao : BaseDao<Movie> {
      */
     @Transaction
     @Query("SELECT * FROM Movie WHERE id in (SELECT movieId FROM Genre WHERE genre.name IN(:genres) GROUP BY movieId HAVING COUNT(1) = :genreCount)")
-    fun getMoviesByGenre(genres: List<String>, genreCount: Int): List<MovieWithDetails>
+    fun getMoviesByGenre(genres: List<String>, genreCount: Int): Flow<List<MovieWithDetails>>
 
     /**
      * Gets all the movies release in the given year.
@@ -55,7 +55,7 @@ interface MovieDao : BaseDao<Movie> {
      */
     @Transaction
     @Query("SELECT * FROM Movie WHERE year = :year")
-    fun getMoviesByYear(year: Int): List<MovieWithDetails>
+    fun getMoviesByYear(year: Int): Flow<List<MovieWithDetails>>
 }
 
 /**

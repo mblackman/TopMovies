@@ -7,6 +7,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.mblackman.topmovies.data.common.RatingSource
 import app.mblackman.topmovies.data.database.*
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.produceIn
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 
 import org.junit.Test
@@ -23,6 +28,7 @@ import java.time.LocalDate
  */
 @RunWith(AndroidJUnit4::class)
 class MovieDaoTests {
+
     private val topMoviesFilename = "movies.json"
 
     private lateinit var movieDatabase: MovieDatabase
@@ -39,20 +45,79 @@ class MovieDaoTests {
         movieDatabase.close()
     }
 
+    @FlowPreview
     @Test
-    fun filterByGenre() {
+    fun filterByMultipleGenres() = runBlocking {
         loadMovies()
-        val movies = movieDatabase.movieDao.getMoviesByGenre(listOf("Drama", "War"), 2)
-        assertThat(movies.count()).isEqualTo(1)
-        is1917(movies.first())
+       movieDatabase.movieDao.getMoviesByGenre(listOf("Drama", "War"), 2).testAction(this) {
+           assertThat(it.count()).isEqualTo(1)
+           is1917(it.first())
+       }
     }
 
+    @FlowPreview
     @Test
-    fun setAndGetMovieDetails() {
+    fun filterBySingleGenres() = runBlocking {
         loadMovies()
-        val movies = movieDatabase.movieDao.getMovies()
-        assertThat(movies.size).isEqualTo(4)
-        is1917(movies.first())
+        movieDatabase.movieDao.getMoviesByGenre(listOf("Drama"), 1).testAction(this) {
+            assertThat(it.count()).isEqualTo(3)
+            is1917(it.first())
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByGenresNoMatches() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByGenre(listOf("Made Up Genre"), 1).testAction(this) {
+            assertThat(it.count()).isEqualTo(0)
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByGenresPartialMatch() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByGenre(listOf("Drama", "War", "Made Up Genre"), 3).testAction(this) {
+            assertThat(it.count()).isEqualTo(0)
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByYear() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByYear(2019).testAction(this) {
+            assertThat(it.count()).isEqualTo(4)
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun filterByYearNoMatch() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMoviesByYear(0).testAction(this) {
+            assertThat(it.count()).isEqualTo(0)
+        }
+    }
+
+    @FlowPreview
+    @Test
+    fun setAndGetMovieDetails() = runBlocking {
+        loadMovies()
+        movieDatabase.movieDao.getMovies().testAction(this) {
+            assertThat(it.size).isEqualTo(4)
+            is1917(it.first())
+        }
+    }
+
+    @FlowPreview
+    private suspend fun <T> Flow<T>.testAction(scope: CoroutineScope, action: (T) -> Unit) {
+        val receiver = this.produceIn(scope)
+        with (receiver.receive()) {
+            action(this)
+        }
+        receiver.cancel()
     }
 
     private fun is1917(movie: MovieWithDetails) {
