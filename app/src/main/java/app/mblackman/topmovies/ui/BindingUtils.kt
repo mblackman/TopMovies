@@ -6,6 +6,8 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import app.mblackman.topmovies.R
 import app.mblackman.topmovies.data.common.MovieFilter
+import app.mblackman.topmovies.data.common.RatingSource
+import app.mblackman.topmovies.data.domain.Movie
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
@@ -30,7 +32,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 
 @BindingAdapter("movieCategory")
 fun bindMovieCategory(textView: TextView, filter: MovieFilter?) {
-    var categoryString: String? = null
+    var categoryString: String = ""
 
     if (filter == null) {
         categoryString = "Top Movies"
@@ -39,14 +41,14 @@ fun bindMovieCategory(textView: TextView, filter: MovieFilter?) {
             categoryString += "Favorite"
         }
         if (filter.year != null) {
-            if (categoryString != null) {
+            if (categoryString != "") {
                 categoryString += ": "
             }
 
-            categoryString += "Release Year ${filter.year}"
+            categoryString += "Release Year: ${filter.year}"
         }
         if (!filter.genres.isNullOrEmpty()) {
-            if (categoryString != null) {
+            if (categoryString != "") {
                 categoryString += " - "
             }
 
@@ -55,4 +57,25 @@ fun bindMovieCategory(textView: TextView, filter: MovieFilter?) {
     }
 
     textView.text = categoryString
+}
+
+@BindingAdapter("movieRatings")
+fun bindMovieRatings(textView: TextView, movie: Movie?) {
+    movie?.ratings?.firstOrNull { it.source == RatingSource.Imdb }?.let {
+        textView.text = "IMDB: ${it.value}"
+    }
+}
+
+@BindingAdapter("delimitedList")
+fun bindDelimitedList(textView: TextView, items: List<String>?) {
+    items?.let {
+        textView.text = items.joinToString(separator = ", ")
+    }
+}
+
+@BindingAdapter("movieRuntime")
+fun bindMovieRuntime(textView: TextView, movie: Movie?) {
+    if (movie?.runtime != null) {
+        textView.text = "${movie.runtime.toString()} min"
+    }
 }

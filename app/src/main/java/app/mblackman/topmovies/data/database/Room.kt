@@ -37,6 +37,13 @@ interface MovieDao : BaseDao<Movie> {
     fun updateMovie(movie: Movie)
 
     /**
+     * Gets the movie with the given id.
+     */
+    @Transaction
+    @Query("SELECT * FROM Movie WHERE id = :id LIMIT 1")
+    fun getMovie(id: Long): Flow<MovieWithDetails?>
+
+    /**
      * Gets all the [Movie]s with additional details.
      *
      * @return The list of [MovieWithDetails].

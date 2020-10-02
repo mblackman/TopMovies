@@ -17,6 +17,8 @@ data class Movie(
     val title: String? = null,
     @Json(name = "Year")
     val year: Int? = null,
+    @Json(name = "Rated")
+    val rated: String? = null,
     @Json(name = "Genre")
     val genres: String? = null,
     @Json(name = "Language")
@@ -51,6 +53,7 @@ fun Movie.toDomainObject(id: Long) =
         id = id,
         title = this.title,
         year = this.year,
+        rated = this.rated,
         genres = this.genres.splitInput(),
         languages = this.languages.splitInput(),
         countries = this.countries.splitInput(),

@@ -73,7 +73,16 @@ class MovieRepositoryImpl @Inject constructor(
             .map { movies -> movies.map { it.toDomainObject() } }
             .flowOn(defaultDispatcher)
             .conflate()
-    
+
+    /**
+     * Gets the movie with the given id.
+     */
+    override fun getMovie(id: Long): Flow<Movie?> =
+        movieDatabase.movieDao.getMovie(id)
+            .map { movie -> movie?.toDomainObject() }
+            .flowOn(defaultDispatcher)
+            .conflate()
+
     private fun MovieFilter?.getMoviesFlow() = 
         when {
             this == null -> {
@@ -84,7 +93,7 @@ class MovieRepositoryImpl @Inject constructor(
                 movieDatabase.movieDao.getMoviesByGenre(this.genres, this.genres.size)
             }
             this.year != null -> {
-                require(this.isFavorite != null) { "Only one filter can be applied with the Room data source." }
+                require(this.isFavorite == null) { "Only one filter can be applied with the Room data source." }
                 movieDatabase.movieDao.getMoviesByYear(this.year)
             }
             this.isFavorite != null -> {

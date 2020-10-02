@@ -16,6 +16,7 @@ data class Movie(
     val id: Long = 0,
     val title: String? = null,
     val year: Int? = null,
+    val rated: String? = null,
     val releaseDate: LocalDate? = null,
     val runtime: Int? = null,
     val director: String? = null,

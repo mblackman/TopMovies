@@ -15,22 +15,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 /**
- * An adapter for order movies. Helps bind the order properties with
+ * An adapter for movies. Helps bind the movie properties with
  * view items in a collection.
  *
  * @param lifecycleOwner The lifecycle owner for the owner of this adapter.
  */
 class MovieListAdapter(
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
+    private val movieClickListener: MovieClickListener
 ) : ListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
-
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
-
-    private val _movieClicked = MutableLiveData<Movie>()
-
-    val movieClicked: LiveData<Movie>
-        get() = _movieClicked
-
     /**
      * Checks for differences between movies.
      */
@@ -64,7 +57,7 @@ class MovieListAdapter(
     override fun getItemViewType(position: Int): Int = 0
 
     /**
-     * View Holder for the order items being created. Handles binding the views to the orders.
+     * View Holder for the movie items being created. Handles binding the views to the movies.
      */
     inner class BindingViewHolder(private val binding: MovieDetailsSmallBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -76,6 +69,7 @@ class MovieListAdapter(
          */
         fun bind(item: Movie) {
             binding.movie = item
+            binding.movieClickListener = movieClickListener
             binding.lifecycleOwner = lifecycleOwner
             binding.executePendingBindings()
         }

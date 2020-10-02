@@ -6,42 +6,50 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import app.mblackman.topmovies.R
+import app.mblackman.topmovies.data.common.MovieFilter
+import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.databinding.MainFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.android.synthetic.main.movie_carousel.view.*
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
+    private val defaultFilters = listOf(
+        MovieFilter(year = 2019),
+        MovieFilter(year = 2018),
+        MovieFilter(genres = listOf("Mystery", "Drama")),
+        MovieFilter(genres = listOf("Action")),
+        MovieFilter(genres = listOf("Fantasy")),
+        MovieFilter(genres = listOf("Thriller"))
+    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = MainFragmentBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = MovieListAdapter(viewLifecycleOwner)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val movieCategoryList = viewModel.getMovieCategoryList()
+        val adapter = MovieCategoryListAdapter(viewLifecycleOwner, MovieClickListener{
+            openMovieDetails(it)
+        })
 
-        movieCategoryList.movies.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        val movieCategoryList = defaultFilters.map { viewModel.getMovieCategoryList(it) }
 
-        binding.carousel.movies.layoutManager = layoutManager
-        binding.carousel.movies.adapter = adapter
-
-        binding.carousel.movieCategoryList = movieCategoryList
+        adapter.submitList(movieCategoryList)
+        binding.moviesCarouselList.layoutManager = layoutManager
+        binding.moviesCarouselList.adapter = adapter
 
         return binding.root
+    }
+
+    private fun openMovieDetails(movie: Movie) {
+        this.findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToMovieDetails(movie.id)
+        )
     }
 }

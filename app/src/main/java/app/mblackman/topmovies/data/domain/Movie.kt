@@ -9,6 +9,7 @@ data class Movie(
     val id: Long = 0,
     val title: String? = null,
     val year: Int? = null,
+    val rated: String? = null,
     val genres: List<String> = emptyList(),
     val languages: List<String> = emptyList(),
     val countries: List<String> = emptyList(),
