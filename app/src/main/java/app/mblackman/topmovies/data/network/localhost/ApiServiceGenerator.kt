@@ -6,7 +6,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-private const val BASE_URL = "http://localhost:4000"
+private const val BASE_URL = "http://192.168.50.82:4000"
 
 /**
  * Create a service.

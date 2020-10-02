@@ -2,9 +2,7 @@ package app.mblackman.topmovies.dagger
 
 import android.content.Context
 import androidx.room.Room
-import app.mblackman.topmovies.data.database.MovieStore
-import app.mblackman.topmovies.data.database.room.MovieDatabase
-import app.mblackman.topmovies.data.database.room.RoomMovieStore
+import app.mblackman.topmovies.data.database.MovieDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -26,12 +24,4 @@ object DatabaseModule {
             MovieDatabase::class.java,
             "MovieDatabase"
         ).build()
-}
-
-@Module
-@InstallIn(ActivityComponent::class)
-abstract class StoreModule {
-
-    @Binds
-    abstract fun bindMovieStore(movieStore: RoomMovieStore): MovieStore
 }

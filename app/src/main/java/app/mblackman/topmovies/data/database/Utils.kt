@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.database.room
+package app.mblackman.topmovies.data.database
 
 import app.mblackman.topmovies.data.domain.Movie as DomainMovie
 import app.mblackman.topmovies.data.domain.Rating as DomainRating

@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.database.room
+package app.mblackman.topmovies.data.database
 
 import androidx.room.TypeConverter
 import app.mblackman.topmovies.data.common.RatingSource

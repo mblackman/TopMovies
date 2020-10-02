@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.mblackman.topmovies.data.common.RatingSource
-import app.mblackman.topmovies.data.database.room.*
+import app.mblackman.topmovies.data.database.*
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -190,7 +190,7 @@ class MovieDaoTests {
         assertThat(movie.countries).isEqualTo(countries)
     }
 
-    private fun loadMovies(filename: String = topMoviesFilename) {
+    private suspend fun loadMovies(filename: String = topMoviesFilename) {
         this.javaClass.classLoader?.getResource(filename)?.readText()?.let { json ->
             with(loadMovieJson(json)) {
                 movieDatabase.movieDao.insertAll(this.map { it.toDatabaseObject() })

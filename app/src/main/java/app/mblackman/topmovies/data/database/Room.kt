@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.database.room
+package app.mblackman.topmovies.data.database
 
 import androidx.room.*
 import androidx.room.TypeConverters
@@ -16,13 +16,13 @@ interface BaseDao<T> {
      * @return The row id of the inserted item.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(item: T): Long
+    suspend fun insert(item: T): Long
 
     /**
      * Inserts all the [T] into the dao.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertAll(items: List<T>)
+    suspend fun insertAll(items: List<T>)
 }
 
 /**
