@@ -28,9 +28,7 @@ class MovieDetails : Fragment() {
         }
 
         binding.backButton.setOnClickListener {
-            this.findNavController().navigate(
-                MovieDetailsDirections.actionMovieDetailsToMainFragment()
-            )
+            this.findNavController().popBackStack()
         }
 
         return binding.root
