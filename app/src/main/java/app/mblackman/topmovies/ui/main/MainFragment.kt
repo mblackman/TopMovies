@@ -19,6 +19,7 @@ class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
 
     private val defaultFilters = listOf(
+        MovieFilter(isFavorite = true),
         MovieFilter(year = 2019),
         MovieFilter(year = 2018),
         MovieFilter(genres = listOf("Mystery", "Drama")),

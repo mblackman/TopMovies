@@ -1,5 +1,6 @@
 package app.mblackman.topmovies.ui
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -93,4 +94,9 @@ fun bindFavoriteIcon(button: MaterialButton, movie: Movie?) {
 fun bindFavoriteText(textView: TextView, movie: Movie?) {
     val isFav = movie?.isFavorite == true
     textView.text = if (isFav) "Unfavorite" else "Favorite"
+}
+
+@BindingAdapter("movieVisibility")
+fun bindMovieVisibility(view: View, movies: List<Movie>?) {
+    view.visibility = if (movies.isNullOrEmpty()) View.GONE else View.VISIBLE
 }

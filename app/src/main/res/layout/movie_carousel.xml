@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-    <variable
-        name="movieCategoryList"
-        type="app.mblackman.topmovies.ui.main.MovieCategoryList" />
+
+        <variable
+            name="movieCategoryList"
+            type="app.mblackman.topmovies.ui.main.MovieCategoryList" />
     </data>
 
     <LinearLayout
+        movieVisibility="@{movieCategoryList.movies}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -17,21 +19,23 @@
         <TextView
             android:id="@+id/title"
             movieCategory="@{movieCategoryList.filter}"
+            movieVisibility="@{movieCategoryList.movies}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:layout_margin="@dimen/padding_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Genre" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/movies"
+            movieVisibility="@{movieCategoryList.movies}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="horizontal"
-            tools:listitem="@layout/movie_details_small"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:listitem="@layout/movie_details_small" />
     </LinearLayout>
 </layout>

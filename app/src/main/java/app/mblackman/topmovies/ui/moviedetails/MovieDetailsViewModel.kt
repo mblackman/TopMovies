@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-private const val NoMovieId = Int.MIN_VALUE
-
 @ExperimentalCoroutinesApi
 class MovieDetailsViewModel @ViewModelInject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
