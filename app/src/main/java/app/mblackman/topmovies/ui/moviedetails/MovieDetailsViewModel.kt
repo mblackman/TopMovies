@@ -11,6 +11,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
 
 private const val NoMovieId = Int.MIN_VALUE
 
@@ -32,6 +33,8 @@ class MovieDetailsViewModel @ViewModelInject constructor(private val movieReposi
 
     fun toggleFavoriteStatus(movie: Movie?) {
         movie ?: return
-        movieRepository.toggleFavoriteStatus(movie)
+        viewModelScope.launch {
+            movieRepository.toggleFavoriteStatus(movie)
+        }
     }
 }

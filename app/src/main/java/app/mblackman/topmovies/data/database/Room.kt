@@ -5,31 +5,27 @@ import androidx.room.TypeConverters
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Defines base members for [Dao]s.
- */
-interface BaseDao<T> {
-    /**
-     * Inserts the given [T] into the dao.
-     *
-     * @param item The item to insert.
-     *
-     * @return The row id of the inserted item.
-     */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: T): Long
-
-    /**
-     * Inserts all the [T] into the dao.
-     */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(items: List<T>)
-}
-
-/**
  * [Dao] interface to define methods to interact with [Movie] in a room database.
  */
 @Dao
-interface MovieDao : BaseDao<Movie> {
+interface MovieDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertMovies(movies: List<Movie>)
+
+    @Transaction
+    fun insertMovieWithDetails(movies: List<MovieWithDetails>) {
+        insertMovies(movies.map { it.movie })
+
+        movies.forEach { movie ->
+            insertRatings(movie.ratings)
+            insertGenres(movie.genres)
+            insertWriters(movie.writers)
+            insertActors(movie.actors)
+            insertLanguages(movie.languages)
+            insertCountries(movie.countries)
+        }
+    }
+
     /**
      * Updates the given [Movie].
      */
@@ -78,54 +74,24 @@ interface MovieDao : BaseDao<Movie> {
     @Transaction
     @Query("SELECT * FROM Movie WHERE isFavorite = :isFavorite")
     fun getMoviesByFavorite(isFavorite: Boolean): Flow<List<MovieWithDetails>>
-}
 
-/**
- * [Dao] interface to define methods to interact with [Rating] in a room database.
- */
-@Dao
-interface RatingDao : BaseDao<Rating> {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertRatings(ratings: List<Rating>)
 
-}
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertGenres(genres: List<Genre>)
 
-/**
- * [Dao] interface to define methods to interact with [Genre] in a room database.
- */
-@Dao
-interface GenreDao : BaseDao<Genre> {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertWriters(writers: List<Writer>)
 
-}
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertActors(actors: List<Actor>)
 
-/**
- * [Dao] interface to define methods to interact with [Writer] in a room database.
- */
-@Dao
-interface WriterDao : BaseDao<Writer> {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertLanguages(languages: List<Language>)
 
-}
-
-/**
- * [Dao] interface to define methods to interact with [Actor] in a room database.
- */
-@Dao
-interface ActorDao : BaseDao<Actor> {
-
-}
-
-/**
- * [Dao] interface to define methods to interact with [Language] in a room database.
- */
-@Dao
-interface LanguageDao : BaseDao<Language> {
-
-}
-
-/**
- * [Dao] interface to define methods to interact with [Country] in a room database.
- */
-@Dao
-interface CountryDao : BaseDao<Country> {
-
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertCountries(countries: List<Country>)
 }
 
 /**
@@ -142,34 +108,4 @@ abstract class MovieDatabase : RoomDatabase() {
      * The [Dao] to interact with [Movie].
      */
     abstract val movieDao: MovieDao
-
-    /**
-     * The [Dao] to interact with [Rating]
-     */
-    abstract val ratingDao: RatingDao
-
-    /**
-     * The [Dao] to interact with [GenreDao]
-     */
-    abstract val genreDao: GenreDao
-
-    /**
-     * The [Dao] to interact with [WriterDao]
-     */
-    abstract val writerDao: WriterDao
-
-    /**
-     * The [Dao] to interact with [ActorDao]
-     */
-    abstract val actorDao: ActorDao
-
-    /**
-     * The [Dao] to interact with [LanguageDao]
-     */
-    abstract val languageDao: LanguageDao
-
-    /**
-     * The [Dao] to interact with [CountryDao]
-     */
-    abstract val countryDao: CountryDao
 }

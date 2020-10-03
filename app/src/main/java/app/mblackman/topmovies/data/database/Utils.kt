@@ -3,20 +3,29 @@ package app.mblackman.topmovies.data.database
 import app.mblackman.topmovies.data.domain.Movie as DomainMovie
 import app.mblackman.topmovies.data.domain.Rating as DomainRating
 
-fun DomainMovie.toDatabaseObject(): Movie =
-    Movie(
-        this.id,
-        this.title,
-        this.year,
-        this.rated,
-        this.releaseDate,
-        this.runtime,
-        this.director,
-        this.plotSummary,
-        this.posterImgUrl,
-        this.productionCompany,
-        this.isFavorite
+fun DomainMovie.toDatabaseObject(): MovieWithDetails =
+    MovieWithDetails(
+        Movie(
+            this.id,
+            this.title,
+            this.year,
+            this.rated,
+            this.releaseDate,
+            this.runtime,
+            this.director,
+            this.plotSummary,
+            this.posterImgUrl,
+            this.productionCompany,
+            this.isFavorite
+        ),
+        this.genres.map { Genre(it, this.id) },
+        this.ratings.map { it.toDatabaseObject(this.id) },
+        this.writers.map { Writer(it, this.id) },
+        this.actors.map { Actor(it, this.id) },
+        this.languages.map { Language(it, this.id) },
+        this.countries.map { Country(it, this.id) }
     )
+
 
 fun DomainRating.toDatabaseObject(movieId: Long): Rating =
     Rating(

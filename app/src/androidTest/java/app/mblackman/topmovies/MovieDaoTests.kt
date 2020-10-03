@@ -158,6 +158,7 @@ class MovieDaoTests {
             id = movieId,
             title = "1917",
             year = 2019,
+            rated = "R",
             releaseDate = LocalDate.of(2020, 1, 10),
             runtime = 119,
             director = "Sam Mendes",
@@ -193,30 +194,9 @@ class MovieDaoTests {
     private suspend fun loadMovies(filename: String = topMoviesFilename) {
         this.javaClass.classLoader?.getResource(filename)?.readText()?.let { json ->
             with(loadMovieJson(json)) {
-                movieDatabase.movieDao.insertAll(this.map { it.toDatabaseObject() })
-
-                forEach { movie ->
-                    movieDatabase.ratingDao.insertAll(movie.ratings.map { it.toDatabaseObject(movie.id) })
-                    movieDatabase.genreDao.insertAll(movie.genres.map { Genre(it, movie.id) })
-                    movieDatabase.writerDao.insertAll(movie.writers.map { Writer(it, movie.id) })
-                    movieDatabase.actorDao.insertAll(movie.actors.map { Actor(it, movie.id) })
-                    movieDatabase.languageDao.insertAll(movie.languages.map {
-                        Language(
-                            it,
-                            movie.id
-                        )
-                    })
-                    movieDatabase.countryDao.insertAll(movie.countries.map {
-                        Country(
-                            it,
-                            movie.id
-                        )
-                    })
-                }
+                movieDatabase.movieDao.insertMovieWithDetails(this.map { it.toDatabaseObject() })
             }
         }
     }
-
-
 }
 

@@ -18,7 +18,7 @@ interface MovieRepository {
     /**
      * Updates the movie in the store.
      */
-    fun updateMovie(movie: Movie)
+    suspend fun updateMovie(movie: Movie)
 
     /**
      * Gets a [Flow] with the list of [Movie]s for the given filter.

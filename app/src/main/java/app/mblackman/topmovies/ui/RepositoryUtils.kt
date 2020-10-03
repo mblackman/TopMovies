@@ -8,7 +8,7 @@ import app.mblackman.topmovies.data.repository.MovieRepository
  *
  * @param movie The movie to update.
  */
-fun MovieRepository.toggleFavoriteStatus(movie: Movie) {
+suspend fun MovieRepository.toggleFavoriteStatus(movie: Movie) {
     val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
     this.updateMovie(updatedMovie)
 }

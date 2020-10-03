@@ -33,25 +33,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getUpdatedMovies(): Boolean {
         return when (val movies = adapter.getTopMovies()) {
             is Success -> {
-                movieDatabase.movieDao.insertAll(movies.result.map { it.toDatabaseObject() })
-
-                movies.result.forEach { movie ->
-                    movieDatabase.ratingDao.insertAll(movie.ratings.map { it.toDatabaseObject(movie.id) })
-                    movieDatabase.genreDao.insertAll(movie.genres.map { Genre(it, movie.id) })
-                    movieDatabase.writerDao.insertAll(movie.writers.map { Writer(it, movie.id) })
-                    movieDatabase.actorDao.insertAll(movie.actors.map { Actor(it, movie.id) })
-                    movieDatabase.languageDao.insertAll(movie.languages.map {
-                        Language(
-                            it,
-                            movie.id
-                        )
-                    })
-                    movieDatabase.countryDao.insertAll(movie.countries.map {
-                        Country(
-                            it,
-                            movie.id
-                        )
-                    })
+                withContext(Dispatchers.IO) {
+                    movieDatabase.movieDao.insertMovieWithDetails(movies.result.map(Movie::toDatabaseObject))
                 }
                 true
             }
@@ -62,11 +45,9 @@ class MovieRepositoryImpl @Inject constructor(
     /**
      * Updates the movie in the store.
      */
-    override fun updateMovie(movie: Movie) {
-        uiScope.launch {
-            withContext(defaultDispatcher){
-                movieDatabase.movieDao.updateMovie(movie.toDatabaseObject())
-            }
+    override suspend fun updateMovie(movie: Movie) {
+        withContext(defaultDispatcher) {
+            movieDatabase.movieDao.updateMovie(movie.toDatabaseObject().movie)
         }
     }
 
@@ -88,7 +69,7 @@ class MovieRepositoryImpl @Inject constructor(
             .flowOn(defaultDispatcher)
             .conflate()
 
-    private fun MovieFilter?.getMoviesFlow() = 
+    private fun MovieFilter?.getMoviesFlow() =
         when {
             this == null -> {
                 movieDatabase.movieDao.getMovies()
