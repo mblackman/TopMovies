@@ -1,13 +1,12 @@
 package app.mblackman.topmovies.ui.moviedetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import app.mblackman.topmovies.R
 import app.mblackman.topmovies.databinding.MovieDetailsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi

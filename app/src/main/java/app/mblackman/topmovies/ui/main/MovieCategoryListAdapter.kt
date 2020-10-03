@@ -1,16 +1,12 @@
 package app.mblackman.topmovies.ui.main
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.databinding.MovieCarouselBinding
 
 /**
@@ -30,7 +26,7 @@ class MovieCategoryListAdapter(
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<MovieCategoryList>() {
             override fun areItemsTheSame(oldItem: MovieCategoryList, newItem: MovieCategoryList): Boolean {
-                return oldItem === newItem
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: MovieCategoryList, newItem: MovieCategoryList): Boolean {

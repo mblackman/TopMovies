@@ -2,7 +2,9 @@ package app.mblackman.topmovies.data.repository
 
 import app.mblackman.topmovies.dagger.DefaultDispatcher
 import app.mblackman.topmovies.data.common.MovieFilter
-import app.mblackman.topmovies.data.database.*
+import app.mblackman.topmovies.data.database.MovieDatabase
+import app.mblackman.topmovies.data.database.toDatabaseObject
+import app.mblackman.topmovies.data.database.toDomainObject
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.network.MovieAdapter
 import app.mblackman.topmovies.data.network.Success

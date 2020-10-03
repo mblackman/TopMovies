@@ -9,8 +9,7 @@ import app.mblackman.topmovies.data.common.MovieFilter
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.repository.MovieRepository
 import app.mblackman.topmovies.ui.toggleFavoriteStatus
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 /**
  * Handles updating and retrieving [Movie]s.

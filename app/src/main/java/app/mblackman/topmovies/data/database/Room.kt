@@ -1,7 +1,6 @@
 package app.mblackman.topmovies.data.database
 
 import androidx.room.*
-import androidx.room.TypeConverters
 import kotlinx.coroutines.flow.Flow
 
 /**

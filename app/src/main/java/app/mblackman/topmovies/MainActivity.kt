@@ -1,8 +1,7 @@
 package app.mblackman.topmovies
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import app.mblackman.topmovies.ui.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

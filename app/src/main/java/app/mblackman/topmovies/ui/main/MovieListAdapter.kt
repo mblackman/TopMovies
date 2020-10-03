@@ -1,18 +1,13 @@
 package app.mblackman.topmovies.ui.main
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.databinding.MovieDetailsSmallBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 /**
  * An adapter for movies. Helps bind the movie properties with
