@@ -34,9 +34,15 @@ class MainFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val adapter = MovieCategoryListAdapter(viewLifecycleOwner, MovieClickListener{
+        val adapter = MovieCategoryListAdapter(
+            lifecycleOwner =  viewLifecycleOwner,
+            movieClickListener =  MovieClickListener {
             openMovieDetails(it)
-        })
+            },
+            favoriteClickListener = MovieClickListener {
+                viewModel.toggleFavoriteStatus(it)
+            }
+        )
 
         val movieCategoryList = defaultFilters.map { viewModel.getMovieCategoryList(it) }
 

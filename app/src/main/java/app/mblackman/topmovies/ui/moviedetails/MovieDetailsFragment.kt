@@ -10,12 +10,17 @@ import androidx.navigation.fragment.findNavController
 import app.mblackman.topmovies.R
 import app.mblackman.topmovies.databinding.MovieDetailsFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 @AndroidEntryPoint
 class MovieDetails : Fragment() {
 
+    @ExperimentalCoroutinesApi
     private val viewModel: MovieDetailsViewModel by viewModels()
 
+    @ExperimentalCoroutinesApi
+    @FlowPreview
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,12 +28,20 @@ class MovieDetails : Fragment() {
         val arguments = MovieDetailsArgs.fromBundle(requireArguments())
         val binding = MovieDetailsFragmentBinding.inflate(inflater, container, false)
 
-        viewModel.getMovieDetails(arguments.movieId).observe(viewLifecycleOwner) {
+        viewModel.setMovie(arguments.movieId)
+
+        viewModel.selectedMovie.observe(viewLifecycleOwner) {
             binding.movie = it
         }
 
         binding.backButton.setOnClickListener {
             this.findNavController().popBackStack()
+        }
+
+        binding.favoriteButton.setOnClickListener {
+            viewModel.selectedMovie.value?.let {movie ->
+                viewModel.toggleFavoriteStatus(movie)
+            }
         }
 
         return binding.root

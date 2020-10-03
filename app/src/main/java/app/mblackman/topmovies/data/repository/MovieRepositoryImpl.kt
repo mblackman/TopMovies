@@ -6,9 +6,7 @@ import app.mblackman.topmovies.data.database.*
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.network.MovieAdapter
 import app.mblackman.topmovies.data.network.Success
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
@@ -21,9 +19,12 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val movieDatabase: MovieDatabase,
     private val adapter: MovieAdapter,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) :
     MovieRepository {
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
     /**
      * Gets movies from the adapter and updates the storage.
      *
@@ -62,7 +63,11 @@ class MovieRepositoryImpl @Inject constructor(
      * Updates the movie in the store.
      */
     override fun updateMovie(movie: Movie) {
-        movieDatabase.movieDao.updateMovie(movie.toDatabaseObject())
+        uiScope.launch {
+            withContext(defaultDispatcher){
+                movieDatabase.movieDao.updateMovie(movie.toDatabaseObject())
+            }
+        }
     }
 
     /**

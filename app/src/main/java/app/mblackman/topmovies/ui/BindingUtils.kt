@@ -2,6 +2,7 @@ package app.mblackman.topmovies.ui
 
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import app.mblackman.topmovies.R
@@ -10,6 +11,7 @@ import app.mblackman.topmovies.data.common.RatingSource
 import app.mblackman.topmovies.data.domain.Movie
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.button.MaterialButton
 
 /**
  * Provides a binding to load an image url with Glide. This handles showing a loading icon
@@ -32,7 +34,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 
 @BindingAdapter("movieCategory")
 fun bindMovieCategory(textView: TextView, filter: MovieFilter?) {
-    var categoryString: String = ""
+    var categoryString = ""
 
     if (filter == null) {
         categoryString = "Top Movies"
@@ -54,9 +56,9 @@ fun bindMovieCategory(textView: TextView, filter: MovieFilter?) {
 
             categoryString += filter.genres.joinToString(separator = ", ", prefix = "Genres: ")
         }
-    }
+}
 
-    textView.text = categoryString
+textView.text = categoryString
 }
 
 @BindingAdapter("movieRatings")
@@ -78,4 +80,17 @@ fun bindMovieRuntime(textView: TextView, movie: Movie?) {
     if (movie?.runtime != null) {
         textView.text = "${movie.runtime.toString()} min"
     }
+}
+
+@BindingAdapter("favoriteIcon")
+fun bindFavoriteIcon(button: MaterialButton, movie: Movie?) {
+    val isFav = movie?.isFavorite == true
+    val iconId = if (isFav) R.drawable.star_24px else R.drawable.star_outline_24px
+    button.icon = ContextCompat.getDrawable(button.context, iconId)
+}
+
+@BindingAdapter("favoriteText")
+fun bindFavoriteText(textView: TextView, movie: Movie?) {
+    val isFav = movie?.isFavorite == true
+    textView.text = if (isFav) "Unfavorite" else "Favorite"
 }

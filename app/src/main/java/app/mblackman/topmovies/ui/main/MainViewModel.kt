@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import app.mblackman.topmovies.data.common.MovieFilter
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.repository.MovieRepository
+import app.mblackman.topmovies.ui.toggleFavoriteStatus
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flowOn
 
@@ -21,7 +22,7 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
         getTopMovies()
     }
 
-    fun getTopMovies() {
+    private fun getTopMovies() {
         viewModelScope.launch {
             movieRepository.getUpdatedMovies()
         }
@@ -30,8 +31,14 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
     fun getMovieCategoryList(filter: MovieFilter? = null) =
         MovieCategoryList(filter, getMovies(filter))
 
-    fun getMovies(filter: MovieFilter? = null): LiveData<List<Movie>> =
+    private fun getMovies(filter: MovieFilter? = null): LiveData<List<Movie>> =
         this.movieRepository
             .getMovies(filter)
             .asLiveData()
+
+    fun toggleFavoriteStatus(movie: Movie) {
+        viewModelScope.launch {
+            movieRepository.toggleFavoriteStatus(movie)
+        }
+    }
 }

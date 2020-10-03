@@ -22,7 +22,8 @@ import kotlinx.coroutines.Dispatchers
  */
 class MovieListAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    private val movieClickListener: MovieClickListener
+    private val movieClickListener: MovieClickListener,
+    private val favoriteClickClickListener: MovieClickListener
 ) : ListAdapter<Movie, RecyclerView.ViewHolder>(diffCallback) {
     /**
      * Checks for differences between movies.
@@ -70,6 +71,7 @@ class MovieListAdapter(
         fun bind(item: Movie) {
             binding.movie = item
             binding.movieClickListener = movieClickListener
+            binding.favoriteClickListener = favoriteClickClickListener
             binding.lifecycleOwner = lifecycleOwner
             binding.executePendingBindings()
         }

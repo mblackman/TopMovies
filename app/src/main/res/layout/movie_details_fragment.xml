@@ -18,7 +18,7 @@
             android:id="@+id/view_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/materialToolbar"
@@ -31,7 +31,7 @@
                     android:id="@+id/back_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="Close movie details button"
+                    android:contentDescription="@string/close_movie_details_button"
                     android:src="@drawable/arrow_back_24px" />
             </com.google.android.material.appbar.MaterialToolbar>
 
@@ -45,7 +45,7 @@
                     imageUrl="@{movie.posterImgUrl}"
                     android:layout_width="128dp"
                     android:layout_height="200dp"
-                    android:contentDescription="Poster image for movie."
+                    android:contentDescription="@string/poster_image_for_movie"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -157,9 +157,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_small"
-                    android:text="Director: "
-                    android:textStyle="bold"
+                    android:text="@string/director"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/text_director"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -183,9 +183,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_small"
-                    android:text="Stars: "
-                    android:textStyle="bold"
+                    android:text="@string/stars"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/text_stars"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -194,11 +194,11 @@
 
                 <TextView
                     android:id="@+id/text_stars"
+                    delimitedList="@{movie.actors}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constrainedWidth="true"
-                    delimitedList="@{movie.actors}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintBaseline_toBaselineOf="@+id/text_stars_label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -210,9 +210,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_small"
-                    android:text="Production Company: "
-                    android:textStyle="bold"
+                    android:text="@string/production_company"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/text_company"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -232,14 +232,17 @@
                     tools:text="Ubiveral" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/favorite_button"
+                    favoriteIcon="@{movie}"
+                    favoriteText="@{movie}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/star_outline_24px"
-                    android:text="Favorite"
                     android:layout_margin="@dimen/padding_large"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_company" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_company"
+                    tools:icon="@drawable/star_outline_24px"
+                    tools:text="Favorite" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

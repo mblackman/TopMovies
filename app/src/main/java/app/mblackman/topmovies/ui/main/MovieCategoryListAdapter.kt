@@ -20,7 +20,8 @@ import app.mblackman.topmovies.databinding.MovieCarouselBinding
  */
 class MovieCategoryListAdapter(
     private val lifecycleOwner: LifecycleOwner,
-    private val movieClickListener: MovieClickListener
+    private val movieClickListener: MovieClickListener,
+    private val favoriteClickListener: MovieClickListener
 ) : ListAdapter<MovieCategoryList, RecyclerView.ViewHolder>(diffCallback) {
     /**
      * Checks for differences between movie categories.
@@ -69,7 +70,7 @@ class MovieCategoryListAdapter(
             binding.movieCategoryList = item
 
             val layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-            val adapter = MovieListAdapter(lifecycleOwner, movieClickListener)
+            val adapter = MovieListAdapter(lifecycleOwner, movieClickListener, favoriteClickListener)
 
             item.movies.observe(lifecycleOwner) {
                 adapter.submitList(it)
