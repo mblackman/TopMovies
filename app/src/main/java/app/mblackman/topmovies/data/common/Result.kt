@@ -1,4 +1,4 @@
-package app.mblackman.topmovies.data.network
+package app.mblackman.topmovies.data.common
 
 /**
  * Represents the result of an operation.

@@ -2,6 +2,8 @@ package app.mblackman.topmovies.data.repository
 
 import app.mblackman.topmovies.data.common.MovieFilter
 import app.mblackman.topmovies.data.domain.Movie
+import app.mblackman.topmovies.data.common.Result
+
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,7 +15,7 @@ interface MovieRepository {
      *
      * @return True if the update was a success, else false.
      */
-    suspend fun getUpdatedMovies(): Boolean
+    suspend fun getUpdatedMovies(): Result<Unit>
 
     /**
      * Updates the movie in the store.

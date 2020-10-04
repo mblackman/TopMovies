@@ -1,8 +1,8 @@
 package app.mblackman.topmovies
 
-import app.mblackman.topmovies.data.network.Failure
+import app.mblackman.topmovies.data.common.Failure
 import app.mblackman.topmovies.data.network.NetworkException
-import app.mblackman.topmovies.data.network.Success
+import app.mblackman.topmovies.data.common.Success
 import app.mblackman.topmovies.data.network.localhost.ApiMovieAdapter
 import app.mblackman.topmovies.data.network.localhost.ApiService
 import app.mblackman.topmovies.data.network.localhost.Movie

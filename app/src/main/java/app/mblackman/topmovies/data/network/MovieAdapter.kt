@@ -1,5 +1,6 @@
 package app.mblackman.topmovies.data.network
 
+import app.mblackman.topmovies.data.common.Result
 import app.mblackman.topmovies.data.domain.Movie
 
 /**

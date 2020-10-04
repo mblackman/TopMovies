@@ -2,8 +2,8 @@ package app.mblackman.topmovies.data.network
 
 /**
  * An exception that occurs from a network adapter.
- *
- * @param message A message to detail the exception.
  */
-class NetworkException(message: String) : Exception(message) {
+class NetworkException : Exception {
+    constructor(message: String) : super(message)
+    constructor(message: String, cause: Throwable) : super(message, cause)
 }

@@ -1,13 +1,16 @@
 package app.mblackman.topmovies.data.repository
 
 import app.mblackman.topmovies.dagger.DefaultDispatcher
+import app.mblackman.topmovies.data.common.Failure
 import app.mblackman.topmovies.data.common.MovieFilter
+import app.mblackman.topmovies.data.common.Result
 import app.mblackman.topmovies.data.database.MovieDatabase
 import app.mblackman.topmovies.data.database.toDatabaseObject
 import app.mblackman.topmovies.data.database.toDomainObject
 import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.data.network.MovieAdapter
-import app.mblackman.topmovies.data.network.Success
+import app.mblackman.topmovies.data.common.Success
+import app.mblackman.topmovies.data.network.NetworkException
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
@@ -24,23 +27,25 @@ class MovieRepositoryImpl @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) :
     MovieRepository {
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     /**
      * Gets movies from the adapter and updates the storage.
      *
      * @return True if the update was a success, else false.
      */
-    override suspend fun getUpdatedMovies(): Boolean {
-        return when (val movies = adapter.getTopMovies()) {
+    override suspend fun getUpdatedMovies(): Result<Unit> {
+        return when (val result = adapter.getTopMovies()) {
             is Success -> {
                 withContext(Dispatchers.IO) {
-                    movieDatabase.movieDao.insertMovieWithDetails(movies.result.map(Movie::toDatabaseObject))
+                    try {
+                        movieDatabase.movieDao.insertMovieWithDetails(result.result.map(Movie::toDatabaseObject))
+                        Success(Unit)
+                    } catch (e: Exception) {
+                        Failure(e)
+                    }
                 }
-                true
             }
-            else -> false
+            is Failure -> Failure(NetworkException("Failed to get movies.", result.throwable))
         }
     }
 
