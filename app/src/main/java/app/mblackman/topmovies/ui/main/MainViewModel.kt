@@ -32,7 +32,10 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
             when (val result = movieRepository.getUpdatedMovies()) {
                 is Failure -> {
                     Log.e(this.javaClass.name, "Failed to get and update movies.", result.throwable)
-                    _toastMessage.postValue("Failed to get latest movies!")
+
+                    if (result.throwable is NetworkException) {
+                        _toastMessage.postValue("Failed to get latest movies!")
+                    }
                 }
             }
         }
