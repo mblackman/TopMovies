@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import app.mblackman.topmovies.R
 import app.mblackman.topmovies.databinding.MovieCarouselBinding
+import app.mblackman.topmovies.ui.MarginItemDecoration
 
 /**
  * An adapter for movie categories. Helps bind the order properties with
@@ -47,6 +49,14 @@ class MovieCategoryListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = MovieCarouselBinding.inflate(layoutInflater, parent, false)
+
+        val layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
+        val margin = binding.root.context.resources.getDimensionPixelSize(R.dimen.padding_medium)
+        val itemDecoration = MarginItemDecoration(leftMargin = margin, rightMargin = margin)
+
+        binding.movies.addItemDecoration(itemDecoration)
+        binding.movies.layoutManager = layoutManager
+
         return BindingViewHolder(binding)
     }
 
@@ -65,15 +75,12 @@ class MovieCategoryListAdapter(
          */
         fun bind(item: MovieCategoryList) {
             binding.movieCategoryList = item
-
-            val layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
             val adapter = MovieListAdapter(lifecycleOwner, movieClickListener, favoriteClickListener)
 
             item.movies.observe(lifecycleOwner) {
                 adapter.submitList(it)
             }
 
-            binding.movies.layoutManager = layoutManager
             binding.movies.adapter = adapter
             binding.lifecycleOwner = lifecycleOwner
             binding.executePendingBindings()
