@@ -12,6 +12,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 
+/**
+ * Fragment for movie details.
+ */
 @AndroidEntryPoint
 class MovieDetails : Fragment() {
 

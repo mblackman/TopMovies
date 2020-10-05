@@ -8,9 +8,51 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface MovieDao {
+    /**
+     * Inserts all the [Movie]s.
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertMovies(movies: List<Movie>)
 
+    /**
+     * Inserts all the [Rating]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertRatings(ratings: List<Rating>)
+
+    /**
+     * Inserts all the [Genre]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertGenres(genres: List<Genre>)
+
+    /**
+     * Inserts all the [Writer]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertWriters(writers: List<Writer>)
+
+    /**
+     * Inserts all the [Actor]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertActors(actors: List<Actor>)
+
+    /**
+     * Inserts all the [Language]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertLanguages(languages: List<Language>)
+
+    /**
+     * Inserts all the [Country]s.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertCountries(countries: List<Country>)
+
+    /**
+     * Adds a [Movie] with all its details.
+     */
     @Transaction
     fun insertMovieWithDetails(movies: List<MovieWithDetails>) {
         insertMovies(movies.map { it.movie })
@@ -73,24 +115,6 @@ interface MovieDao {
     @Transaction
     @Query("SELECT * FROM Movie WHERE isFavorite = :isFavorite")
     fun getMoviesByFavorite(isFavorite: Boolean): Flow<List<MovieWithDetails>>
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertRatings(ratings: List<Rating>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertGenres(genres: List<Genre>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertWriters(writers: List<Writer>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertActors(actors: List<Actor>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertLanguages(languages: List<Language>)
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertCountries(countries: List<Country>)
 }
 
 /**

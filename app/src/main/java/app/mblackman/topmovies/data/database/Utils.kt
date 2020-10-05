@@ -3,6 +3,9 @@ package app.mblackman.topmovies.data.database
 import app.mblackman.topmovies.data.domain.Movie as DomainMovie
 import app.mblackman.topmovies.data.domain.Rating as DomainRating
 
+/**
+ * Converts the [DomainMovie] into a database friendly [MovieWithDetails].
+ */
 fun DomainMovie.toDatabaseObject(): MovieWithDetails =
     MovieWithDetails(
         Movie(
@@ -26,7 +29,9 @@ fun DomainMovie.toDatabaseObject(): MovieWithDetails =
         this.countries.map { Country(it, this.id) }
     )
 
-
+/**
+ * Converts a [DomainRating] to a database friendly [Rating].
+ */
 fun DomainRating.toDatabaseObject(movieId: Long): Rating =
     Rating(
         this.source,
@@ -34,6 +39,9 @@ fun DomainRating.toDatabaseObject(movieId: Long): Rating =
         movieId
     )
 
+/**
+ * Converts a [MovieWithDetails] to a [DomainMovie].
+ */
 fun MovieWithDetails.toDomainObject() : DomainMovie =
     DomainMovie(
         id = this.movie.id,
@@ -55,6 +63,9 @@ fun MovieWithDetails.toDomainObject() : DomainMovie =
         isFavorite = this.movie.isFavorite
     )
 
+/**
+ * Converts a [Rating] to a [DomainRating].
+ */
 fun Rating.toDomainObject(): DomainRating =
     DomainRating(
         this.source,

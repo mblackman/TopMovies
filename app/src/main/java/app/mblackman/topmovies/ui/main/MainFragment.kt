@@ -14,6 +14,9 @@ import app.mblackman.topmovies.data.domain.Movie
 import app.mblackman.topmovies.databinding.MainFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * The fragment for the movies overview.
+ */
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 

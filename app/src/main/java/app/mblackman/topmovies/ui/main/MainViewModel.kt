@@ -20,6 +20,9 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
 
     private val _toastMessage = MutableLiveData<String?>()
 
+    /**
+     * Gets a [LiveData] containing any toast messages to display.
+     */
     val toastMessage: LiveData<String?>
         get() = _toastMessage
 
@@ -41,6 +44,12 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
         }
     }
 
+    /**
+     * Gets a [MovieCategoryList] based on the given [MovieFilter].
+     *
+     * @param filter The [MovieFilter] to filter returned movies by.
+     * @return The [MovieCategoryList] based on the given input.
+     */
     fun getMovieCategoryList(filter: MovieFilter? = null) =
         MovieCategoryList(filter, getMovies(filter))
 
@@ -49,12 +58,20 @@ class MainViewModel @ViewModelInject constructor(private val movieRepository: Mo
             .getMovies(filter)
             .asLiveData()
 
+    /**
+     * Toggles the favorite status of the given [Movie].
+     *
+     * @param movie The [Movie] to toggle favorite status for.
+     */
     fun toggleFavoriteStatus(movie: Movie) {
         viewModelScope.launch {
             movieRepository.toggleFavoriteStatus(movie)
         }
     }
 
+    /**
+     * Call when a toast message has been handled.
+     */
     fun toastHandled() {
         _toastMessage.postValue(null)
     }
